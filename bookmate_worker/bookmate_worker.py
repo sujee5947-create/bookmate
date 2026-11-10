@@ -210,6 +210,11 @@ def job_recording(job, stage):
         raise
     except Exception as e:
         print("처리 오류:", type(e).__name__)
+        _m = str(e)
+        for _k in (E("SUPABASE_SECRET_KEY"), E("ANTHROPIC_API_KEY")):
+            if _k:
+                _m = _m.replace(_k, "***")
+        print("  상세:", _m[:600])  # 키는 가려서 출력
         set_rec(rid, "failed", "처리 중 오류가 발생했어요. 잠시 뒤 다시 시도해 주세요.")
         raise AiFail("처리 중 오류가 발생했어요. 잠시 뒤 다시 시도해 주세요.")
 
@@ -240,7 +245,8 @@ def job_recommend(job):
     prefs = [r["body"] for r in get("club_prefs", f"select=body&club_id=eq.{cid}")]
     done = [f"{r['books']['title']} - {r['books']['author']}" for r in get("events", f"select=books(title,author)&club_id=eq.{cid}&book_id=not.is.null")]
     prev = [f"{r['title']} - {r['author']}" for r in get("ai_book_recommendations", f"select=title,author,events!inner(club_id)&events.club_id=eq.{cid}")]
-    msg = f"[토론 요약]\n{st}\n\n[멤버가 직접 적은 독서 취향]\n{chr(10).join(prefs) or '(없음)'}\n\n[이미 다룬 책]\n{chr(10).join(done) or '(없음)'}\n\n[이미 추천한 책]\n{chr(10).join(prev) or '(없음)'}"
+    print(f"  책 추천: 독서 취향 {len(prefs)}개 반영")
+    msg = f"[멤버가 직접 적은 독서 취향 - 최우선 기준]\n{chr(10).join(prefs) or '(없음)'}\n\n[참고용 지난 토론 요약]\n{st}\n\n[이미 다룬 책]\n{chr(10).join(done) or '(없음)'}\n\n[이미 추천한 책]\n{chr(10).join(prev) or '(없음)'}"
     out, u = A.call_claude(A.REC_SYSTEM, [{"role": "user", "content": msg}], 3000)
     arr = A.parse_json(out)
     if not isinstance(arr, list):
@@ -294,7 +300,7 @@ def job_chat(job):
     if not msgs or msgs[-1]["role"] != "user":
         return  # 앞선 작업이 이미 답했어요
     limit_check(uid, "chat", int(E("CHAT_DAILY_LIMIT", "40")))
-    out, u = A.call_claude(A.CHAT_SYSTEM + "\n\n[제공된 자료]\n" + chat_context(conv, uid), msgs, 1200, 120)
+    out, u = A.call_claude(A.CHAT_SYSTEM + "\n\n[제공된 자료]\n" + chat_context(conv, uid), msgs, 2500, 120)
     post("ai_messages", {"conversation_id": cid, "role": "assistant", "content": out.strip()[:8000]})
     patch("ai_conversations", f"id=eq.{cid}", {"updated_at": now()})
     add_usage(uid, "chat")
