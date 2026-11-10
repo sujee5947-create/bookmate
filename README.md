@@ -129,5 +129,3 @@ python bookmate_worker.py   # Windows는 run_worker.bat
 ## 만든 사람
 
 Sujee Cho · [github.com/sujee5947-create](https://github.com/sujee5947-create)
-
-배터리 개발자로 일하며 반복 업무를 AI로 자동화해 왔고, 그 습관을 일상의 불편으로 넓혀 만든 프로젝트입니다.
