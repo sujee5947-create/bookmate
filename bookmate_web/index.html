@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F3F4F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1220" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>BOOKMATE · 북메이트</title>
+<style>
+:root{--bg:#F3F4F8;--card:#fff;--ink:#14172B;--mute:#686D86;--line:#E1E3EE;--acc:#3347D1;--acc2:#E7EAFF;--hl:#FFE45C;--hlt:#14172B;--warn:#C23B2E;--btn:#14172B;--btnt:#fff;
+--olive:var(--acc);--olive2:var(--acc2);
+--serif:'Noto Serif KR','Nanum Myeongjo','Apple Myungjo',serif;--sans:'Pretendard Variable',Pretendard,'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+--r1:8px;--r2:16px;--r3:28px;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root{--bg:#0F1220;--card:#181C30;--ink:#ECEEF8;--mute:#9A9FBA;--line:#2A2F4A;--acc:#8F9CFF;--acc2:#252B52;--btn:#ECEEF8;--btnt:#0F1220;--warn:#FF8E7F}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans);letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+#app{max-width:640px;margin:0 auto;padding:22px 18px calc(104px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:var(--sans);margin:0;line-height:1.3}
+h1{font-size:27px;font-weight:800;letter-spacing:-.03em}
+h2{font-size:17px;font-weight:700;margin:30px 0 12px;letter-spacing:-.02em}
+h3{font-size:16px;font-weight:650}
+p{margin:8px 0}
+.sub{color:var(--mute);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:16px;margin-bottom:10px}
+.row{display:flex;gap:12px;align-items:center}.col{flex:1;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+button{font-family:var(--sans)}
+.btn{border:1.5px solid var(--btn);background:var(--btn);color:var(--btnt);border-radius:999px;padding:9px 18px;font:650 14px var(--sans);cursor:pointer;min-height:42px;transition:transform .12s}
+.btn{white-space:nowrap}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.4}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.danger{background:transparent;border-color:var(--warn);color:var(--warn)}
+.btn.sm{padding:5px 14px;min-height:34px;font-size:13px}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:14px 0 6px}.chips::-webkit-scrollbar{display:none}.chips .chip{flex:none;margin:0 0 8px}
+.chip{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font:550 13px var(--sans);margin:0 6px 8px 0;background:var(--card);color:var(--ink);cursor:pointer}
+.chip.on{background:var(--hl);border-color:var(--hl);color:var(--hlt);font-weight:750}
+.tag{font-size:11.5px;font-weight:600;color:var(--acc);background:var(--acc2);border-radius:6px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:8px 0 2px}.bar i{display:block;height:100%;background:var(--acc);border-radius:3px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;margin:5px 0 14px;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+input[type=checkbox]{width:auto;margin:0 8px 0 0;accent-color:var(--acc)}
+label{font-size:13px;font-weight:600;color:var(--mute)}textarea{min-height:92px;line-height:1.55}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.link{background:none;border:0;color:var(--acc);padding:0;font:600 14px var(--sans);cursor:pointer}
+.empty{text-align:center;color:var(--mute);padding:30px 14px;background:var(--card);border-radius:var(--r2);font-size:14px}
+
+/* 하단 메뉴 */
+.nav{position:fixed;left:0;right:0;bottom:0;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:center;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));z-index:5}
+.nav button{flex:1;max-width:150px;background:none;border:0;padding:0;color:var(--mute);font:600 11.5px var(--sans);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+.nav i{display:flex;width:56px;height:30px;border-radius:15px;align-items:center;justify-content:center;transition:background .2s}
+.nav svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav button.on{color:var(--ink);font-weight:750}.nav button.on i{background:var(--hl);color:var(--hlt)}
+
+/* 시트 */
+.ov{position:fixed;inset:0;background:rgba(12,14,32,.5);display:none;align-items:flex-end;justify-content:center;z-index:10}.ov.show{display:flex;animation:fd .2s}
+.sh{background:var(--card);width:100%;max-width:640px;max-height:90vh;overflow-y:auto;border-radius:var(--r3) var(--r3) 0 0;padding:10px 20px calc(28px + env(safe-area-inset-bottom,0px))}
+.ov.show .sh{animation:up .3s cubic-bezier(.2,.8,.2,1)}
+.grab{display:block;width:40px;height:4px;border-radius:2px;background:var(--line);margin:2px auto 18px}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}@keyframes fd{from{opacity:0}to{opacity:1}}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:14px;font:550 14px var(--sans);z-index:20;display:none;max-width:90%;box-shadow:0 8px 24px rgba(10,12,30,.28)}
+
+/* 책 표지 · 책장 */
+.cv{position:relative;aspect-ratio:2/3;border-radius:3px 7px 7px 3px;background:var(--cb);color:var(--cf);padding:11px 9px 9px 15px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.08),0 6px 14px -6px rgba(15,18,40,.45)}
+.cv:before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(255,255,255,.12) 55%,rgba(0,0,0,.06))}
+.cv:after{content:"";position:absolute;left:15px;right:9px;top:44%;height:1.5px;background:currentColor;opacity:.35}
+.cvt{font:700 13px/1.32 var(--serif);letter-spacing:-.02em;word-break:keep-all;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.cva{font:500 10.5px/1.3 var(--sans);opacity:.85;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.cv.lg{width:104px;flex:none;padding:14px 11px 11px 19px}.cv.lg .cvt{font-size:15px}.cv.lg .cva{font-size:11.5px}
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 14px;margin-top:4px}
+.bk{cursor:pointer;min-width:0}.bk .bar{height:4px;margin:9px 0 0}.stv{font-size:11px;color:var(--mute);margin-top:7px;letter-spacing:1px}
+.hero{display:flex;gap:18px;align-items:flex-end;background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:18px;margin-bottom:22px;cursor:pointer}
+.bt{font:700 19px/1.35 var(--serif);letter-spacing:-.02em;margin:2px 0 3px;word-break:keep-all}
+.pgs{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--mute)}.pgs b{font-size:24px;color:var(--ink);font-weight:800;letter-spacing:-.03em}
+
+/* 아바타 · 날짜 배지 · 모임 타일 */
+.av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--cb);color:var(--cf);display:flex;align-items:center;justify-content:center;font:700 14px var(--sans)}
+.mono{flex:none;width:48px;height:48px;border-radius:14px;background:var(--cb);color:var(--cf);display:flex;align-items:center;justify-content:center;font:700 20px var(--serif)}
+.dbadge{flex:none;width:52px;border-radius:12px;background:var(--ink);color:var(--bg);text-align:center;padding:7px 0 6px;line-height:1.1}
+.dbadge b{display:block;font:800 21px var(--sans);letter-spacing:-.03em}.dbadge span{font:600 11px var(--sans);opacity:.75}
+
+/* 로그인 */
+.spines{display:flex;align-items:flex-end;gap:5px;height:96px;margin:10px 0 0;padding-bottom:0;border-bottom:3px solid var(--ink)}
+.spines i{display:block;width:var(--w);height:var(--h);background:var(--c);border-radius:3px 3px 0 0;position:relative}
+.spines i:after{content:"";position:absolute;left:0;right:0;top:14%;height:3px;background:rgba(255,255,255,.55)}
+.wm{font:800 34px/1.1 var(--sans);letter-spacing:-.04em;margin:20px 0 6px}
+.nav,.ov,.sh{-webkit-overflow-scrolling:touch}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"><p class="sub">불러오는 중…</p></div>
+<nav class="nav" id="nav"></nav>
+<div class="ov" id="ov" onclick="if(event.target===this)closeSheet()"><div class="sh" id="sh" role="dialog" aria-modal="true"></div></div>
+<div id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
+<script src="api.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ST={want:'읽고 싶어요',reading:'읽는 중',done:'완독',pause:'잠시 멈춤'},VIS={private:'나만 보기',club:'클럽 멤버',public:'전체 공개'},RS={yes:'참석',no:'불참',maybe:'미정'},RL={owner:'모임장',admin:'운영진',member:'멤버'};
+let S={me:null,tab:'lib',lt:'reading',club:null,ct:'info'};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2600)};
+const sheet=h=>{$('#sh').innerHTML='<i class="grab"></i>'+h;$('#ov').classList.add('show')},closeSheet=()=>$('#ov').classList.remove('show');
+const ok=async(p,msg)=>{try{await p;msg&&toast(msg);return true}catch(e){return false}};
+function form(title,fields,submit,label='저장'){
+sheet(`<h3>${title}</h3><div style="height:12px"></div>${fields.map(f=>`<label for="f_${f.k}">${f.l}${f.req?' *':''}</label>${f.t==='textarea'?`<textarea id="f_${f.k}">${esc(f.v)}</textarea>`:f.t==='select'?`<select id="f_${f.k}">${f.o.map(o=>`<option value="${esc(o[0])}" ${String(o[0])===String(f.v)?'selected':''}>${esc(o[1])}</option>`).join('')}</select>`:f.t==='checkbox'?`<div><input type="checkbox" id="f_${f.k}" ${f.v?'checked':''}></div>`:`<input id="f_${f.k}" type="${f.t||'text'}" value="${esc(f.v)}" ${f.t==='number'?'min="0" inputmode="numeric"':''}>`}`).join('')}<button class="btn" id="fok">${label}</button>`);
+$('#fok').onclick=async()=>{const v={};for(const f of fields){const e=$('#f_'+f.k);v[f.k]=f.t==='checkbox'?e.checked:e.value.trim();if(f.req&&!v[f.k])return toast(f.l+'을(를) 입력해 주세요.')}if(await submit(v)!==false)closeSheet()}}
+function confirmBox(msg,fn){sheet(`<h3>${esc(msg)}</h3><p class="sub">이 작업은 되돌릴 수 없어요.</p><div class="row" style="margin-top:14px"><button class="btn danger" id="cy">확인</button><button class="btn ghost" onclick="closeSheet()">취소</button></div>`);$('#cy').onclick=async()=>{closeSheet();await fn()}}
+const empty=t=>`<div class="empty">${t}</div>`,stars=n=>'★'.repeat(n)+'☆'.repeat(5-n);
+const COV=[['#3347D1','#fff'],['#D9472B','#fff'],['#1E6B53','#fff'],['#6C2E5E','#fff'],['#F0B429','#1b1b1b'],['#16757F','#fff'],['#F4B9B0','#3a1c18'],['#3A485E','#fff'],['#5B4B8A','#fff']];
+const hs=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h},pal=s=>COV[hs(s)%COV.length];
+const cover=(b,cls='')=>{const c=pal(b.title+b.author);return `<div class="cv ${cls}" style="--cb:${c[0]};--cf:${c[1]}"><span class="cvt">${esc(b.title)}</span><span class="cva">${esc(b.author)}</span></div>`};
+const av=(n,s=36)=>{const c=pal(n);return `<div class="av" style="--cb:${c[0]};--cf:${c[1]};width:${s}px;height:${s}px;font-size:${Math.round(s*.4)}px">${esc(String(n).slice(0,1))}</div>`};
+const dbadge=d=>{const p=String(d||'').split('-');return `<div class="dbadge"><b>${+p[2]||''}</b><span>${+p[1]||''}월</span></div>`};
+const pct=b=>Math.min(100,Math.round(b.page*100/b.pages));
+function shelf(L){const hero=S.lt==='reading'?L[0]:null,rest=hero?L.slice(1):L;
+return(hero?`<div class="hero" onclick="bookSheet('${hero.id}')">${cover(hero,'lg')}<div class="col"><div class="bt">${esc(hero.title)}</div><div class="sub">${esc(hero.author)}</div><div class="bar" style="margin-top:16px"><i style="width:${pct(hero)}%"></i></div><div class="pgs"><b>${pct(hero)}%</b><span>${hero.page} / ${hero.pages}쪽</span></div></div></div>`:'')+(rest.length?`<div class="shelf">${rest.map(b=>`<div class="bk" onclick="bookSheet('${b.id}')">${cover(b)}${b.status==='reading'?`<div class="bar"><i style="width:${pct(b)}%"></i></div>`:''}${b.rating?`<div class="stv">${stars(b.rating)}</div>`:''}</div>`).join('')}</div>`:'')}
+
+async function render(){
+const nav=$('#nav');
+if(!S.me){nav.style.display='none';$('#app').innerHTML=`<div class="spines"><i style="--w:15px;--h:58px;--c:#F0B429"></i><i style="--w:21px;--h:84px;--c:#3347D1"></i><i style="--w:13px;--h:66px;--c:#F4B9B0"></i><i style="--w:18px;--h:78px;--c:#D9472B"></i><i style="--w:24px;--h:90px;--c:#1E6B53"></i><i style="--w:14px;--h:62px;--c:#6C2E5E"></i><i style="--w:19px;--h:74px;--c:#16757F"></i></div><h1 class="wm">BOOKMATE</h1><p class="sub" style="font-size:15px">친구들과 같은 책을 읽고, 이야기하는 곳</p><div class="card" style="margin-top:22px"><label for="an">닉네임</label><input id="an" autocomplete="username" maxlength="16"><label for="ap">비밀번호 (6자 이상)</label><input id="ap" type="password" autocomplete="current-password">${S.needCode?'<label for="ac">가입 코드 (가입할 때만 입력)</label><input id="ac" autocomplete="off">':''}<div class="row"><button class="btn" id="bl">로그인</button><button class="btn ghost" id="bs">가입하기</button></div></div>`;
+const cred=()=>({nick:$('#an').value.trim(),pw:$('#ap').value,code:$('#ac')?$('#ac').value:''});
+$('#bl').onclick=async()=>{try{const j=await api('login',cred());S.me=j.me;S.tab='lib';render()}catch(e){}};
+$('#bs').onclick=async()=>{if(await ok(api('signup',cred()),'가입했어요!')){S.me=(await api('me')).me;S.tab='lib';render()}};return}
+nav.style.display='flex';const IC={lib:'<path d="M4.5 4.5h4v15h-4zM10 4.5h4v15h-4z"/><path d="m15.6 5.3 3.8-1 3 14.5-3.8 1z" transform="translate(-1.2 0)"/>',club:'<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.4-3.2 2.7-5 5.5-5s5.1 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M16 14.2c2.6-.2 4.5 1.3 4.9 4.3"/>',my:'<circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.6-4 3.4-6 7.2-6s6.6 2 7.2 6"/>'};
+nav.innerHTML=[['lib','내 서재'],['club','모임'],['my','MY']].map(t=>`<button class="${S.tab===t[0]?'on':''}" onclick="go('${t[0]}')"><i><svg viewBox="0 0 24 24">${IC[t[0]]}</svg></i>${t[1]}</button>`).join('');
+try{$('#app').innerHTML=await({lib:vLib,club:S.ev?vEvent:(S.club?vClub:vClubs),my:S.conv?vConv:vMy}[S.tab])()}catch(e){$('#app').innerHTML=empty('불러오지 못했어요. 새로고침해 주세요.')}}
+const go=t=>{if(REC&&!confirm('녹음 중이에요. 나가면 녹음이 사라져요. 나갈까요?'))return;stopRec(true);S.tab=t;S.club=null;S.ev=null;S.conv=null;render();scrollTo(0,0)};
+
+async function vLib(){const d=S.d=await api('lib'),L=d.books.filter(b=>b.status===S.lt);
+return `<div class="top"><h1>내 서재</h1><button class="btn sm" onclick="addSheet()">책 추가</button></div><div class="chips">${Object.keys(ST).map(k=>`<button class="chip ${S.lt===k?'on':''}" onclick="S.lt='${k}';render()">${ST[k]} ${d.books.filter(b=>b.status===k).length}</button>`).join('')}</div>
+${L.length?shelf(L):empty(`${ST[S.lt]} 목록이 비어 있어요.`)}
+<div class="row" style="margin-top:14px"><button class="btn ghost" onclick="journalSheet()">독서 일지 쓰기</button></div>
+<h2>내 독서 일지</h2>${d.journals.length?d.journals.map(j=>`<div class="card"><div class="sub">${esc((d.books.find(b=>b.book_id===j.book_id)||{}).title||'')} · ${j.created_at.slice(0,10)} · ${VIS[j.visibility]}</div>${esc(j.body)}<div style="margin-top:6px"><button class="btn ghost sm" onclick="startChat({journal_id:'${j.id}'})">이 일지로 AI와 토론</button></div></div>`).join(''):empty('아직 쓴 일지가 없어요. 일지는 기본적으로 나만 볼 수 있어요.')}`}
+
+function addSheet(){sheet(`<h3>책 추가</h3><label for="sq">제목 또는 저자 검색</label><input id="sq" placeholder="검색어를 입력하세요"><div id="sr"></div><button class="btn ghost" onclick="manualSheet()">찾는 책이 없나요? 직접 등록</button>`);
+const run=async()=>{const j=await api('books_search',{q:$('#sq').value});$('#sr').innerHTML=j.books.length?j.books.map(b=>`<div class="card row"><div class="col"><b>${esc(b.title)}</b><div class="sub">${esc(b.author)} · ${b.pages}쪽</div></div><select style="width:auto;margin:0" onchange="addBook('${b.id}',this.value)"><option value="">추가</option>${Object.keys(ST).map(k=>`<option value="${k}">${ST[k]}</option>`).join('')}</select></div>`).join(''):empty('등록된 책이 없어요. 아래에서 직접 등록해 주세요.')};
+$('#sq').oninput=run;run()}
+async function addBook(id,st){if(!st)return;if(await ok(api('add_book',{book_id:id,status:st}),'내 서재에 추가했어요.')){closeSheet();S.lt=st;render()}}
+function manualSheet(){form('책 직접 등록',[{k:'title',l:'제목',req:1},{k:'author',l:'저자',req:1},{k:'pages',l:'쪽수',t:'number',req:1},{k:'genre',l:'장르',t:'select',o:['소설','에세이','과학','인문','기타'].map(x=>[x,x]),v:'기타'},{k:'status',l:'읽기 상태',t:'select',o:Object.entries(ST),v:'want'}],async v=>{if(await ok(api('add_book',v),'내 서재에 추가했어요.')){S.lt=v.status;render()}else return false},'등록하고 추가')}
+function bookSheet(id){const b=S.d.books.find(x=>x.id===id);
+form(b.title,[{k:'status',l:'읽기 상태',t:'select',o:Object.entries(ST),v:b.status},{k:'page',l:`읽은 쪽수 (전체 ${b.pages}쪽)`,t:'number',v:b.page},{k:'rating',l:'별점',t:'select',o:[0,1,2,3,4,5].map(n=>[n,n?stars(n):'선택 안 함']),v:b.rating},{k:'review',l:'서평',t:'textarea',v:b.review},{k:'public',l:'서평을 전체 공개',t:'checkbox',v:b.review_public}],
+async v=>{if(await ok(api('upd_book',{id,...v}),'저장했어요.'))render();else return false});
+$('#sh').insertAdjacentHTML('beforeend',`<div style="margin-top:14px"><button class="btn ghost sm" id="bai">AI 독서 토론</button> <button class="btn danger sm" id="bd">서재에서 삭제</button></div>`);$('#bai').onclick=()=>startChat({book_id:b.book_id});$('#bd').onclick=()=>confirmBox('이 책을 서재에서 삭제할까요?',async()=>{if(await ok(api('del_book',{id}),'삭제했어요.'))render()})}
+async function journalSheet(){if(!S.d.books.length)return toast('먼저 내 서재에 책을 추가해 주세요.');const cl=(await api('clubs')).clubs.filter(c=>c.role);
+form('독서 일지 쓰기',[{k:'book_id',l:'책',t:'select',o:S.d.books.map(b=>[b.book_id,b.title])},{k:'body',l:'내용',t:'textarea',req:1},{k:'vis',l:'공개 범위 (기본: 나만 보기)',t:'select',o:Object.entries(VIS),v:'private'},{k:'club_id',l:'클럽 멤버 공개일 때 모임',t:'select',o:[['','선택 안 함'],...cl.map(c=>[c.id,c.name])]}],async v=>{if(await ok(api('journal_add',v),'일지를 저장했어요.'))render();else return false})}
+
+async function vClubs(){const cl=(await api('clubs')).clubs,my=cl.filter(c=>c.role),pub=cl.filter(c=>!c.role);
+const card=c=>{const p=pal(c.name);return `<div class="card row" style="cursor:pointer" onclick="openClub('${c.id}')"><div class="mono" style="--cb:${p[0]};--cf:${p[1]}">${esc(c.name.slice(0,1))}</div><div class="col"><h3>${esc(c.name)}${c.is_public?'':'<span class="tag">비공개</span>'}${c.role?`<span class="tag">${RL[c.role]}</span>`:''}</h3><div class="sub">${esc(c.descr)}</div><div class="sub">멤버 ${c.n}명</div></div></div>`};
+return `<div class="top"><h1>모임</h1><button class="btn sm" onclick="clubSheet()">모임 만들기</button></div><div style="margin:12px 0"><button class="btn ghost sm" onclick="codeSheet()">초대 코드로 참여</button></div><h2>내 모임</h2>${my.length?my.map(card).join(''):empty('참여 중인 모임이 없어요.')}<h2>공개 모임</h2>${pub.length?pub.map(card).join(''):empty('참여할 수 있는 공개 모임이 없어요.')}`}
+const openClub=id=>{S.club=id;S.ct='info';render();scrollTo(0,0)};
+function clubSheet(){form('모임 만들기',[{k:'name',l:'모임 이름',req:1},{k:'descr',l:'소개',t:'textarea'},{k:'pub',l:'공개 모임 (해제하면 초대 코드로만 참여)',t:'checkbox',v:true}],async v=>{try{const j=await api('club_create',v);toast(j.code?'만들었어요. 초대 코드: '+j.code:'모임을 만들었어요.');render()}catch(e){return false}})}
+function codeSheet(){form('초대 코드로 참여',[{k:'code',l:'초대 코드',req:1}],async v=>{try{const j=await api('club_join',v);toast('모임에 참여했어요.');openClub(j.id)}catch(e){return false}},'참여하기')}
+
+async function vClub(){const d=await api('club_get',{id:S.club}),c=d.club,r=d.role,adm=r==='owner'||r==='admin';
+const head=`<button class="link" onclick="go('club')">← 모임 목록</button><h1 style="margin-top:8px">${esc(c.name)}</h1><p class="sub">${esc(c.descr)}</p>`;
+if(!r)return head+`<button class="btn" onclick="joinPub('${c.id}')">참여하기</button><div style="margin-top:14px">${empty('모임에 참여하면 일정과 토론을 볼 수 있어요.')}</div>`;
+const T=[['info','소개'],['meet','일정'],['talk','토론'],['jr','일지']];let b='';
+if(S.ct==='info')b=(c.code?`<div class="card">초대 코드: <b>${esc(c.code)}</b></div>`:'')+d.members.map(m=>`<div class="card row">${av(m.nick)}<div class="col">${esc(m.nick)}<span class="tag">${RL[m.role]}</span></div>${r==='owner'&&m.id!==S.me.id?`<button class="btn ghost sm" onclick="role('${c.id}','${m.id}','${m.role==='admin'?'member':'admin'}')">${m.role==='admin'?'운영진 해제':'운영진 지정'}</button>`:''}</div>`).join('')+`<button class="btn danger sm" onclick="confirmBox('모임을 나갈까요?',async()=>{if(await ok(api('club_leave',{id:'${c.id}'}),'모임에서 나갔어요.'))go('club')})">모임 나가기</button>`;
+if(S.ct==='meet')b=(adm?`<button class="btn sm" onclick="eventSheet('${c.id}')">일정 만들기</button><div style="height:12px"></div>`:'')+(d.events.length?d.events.map(e=>{const n=k=>e.rsvps.filter(x=>x.resp===k).length;return `<div class="card"><div class="row" style="align-items:flex-start">${dbadge(e.date)}<div class="col"><h3>${esc(e.title)}</h3><div class="sub">${esc(e.place)}</div></div></div><p>${esc(e.descr)}</p>${e.book_title?`<div class="sub">토론 도서: ${esc(e.book_title)}</div>`:''}<div style="margin:8px 0"><button class="btn ghost sm" onclick="openEvent('${e.id}')">녹음·AI 요약 열기</button></div><div class="sub" style="margin-bottom:8px">참석 ${n('yes')} · 불참 ${n('no')} · 미정 ${n('maybe')}</div>${Object.keys(RS).map(k=>`<button class="chip ${e.mine===k?'on':''}" onclick="rsvp('${e.id}','${k}')">${RS[k]}</button>`).join('')}<div class="sub">${e.rsvps.map(x=>esc(x.nick)+' '+RS[x.resp]).join(', ')}</div>${adm?`<button class="btn danger sm" style="margin-top:8px" onclick="confirmBox('이 일정을 삭제할까요?',async()=>{if(await ok(api('event_del',{id:'${e.id}'}),'삭제했어요.'))render()})">일정 삭제</button>`:''}</div>`}).join(''):empty('예정된 일정이 없어요.'));
+if(S.ct==='talk')b=`<button class="btn sm" onclick="postSheet('${c.id}')">글쓰기</button><div style="height:12px"></div>`+(d.posts.length?d.posts.map(p=>`<div class="card"><div class="row" style="margin-bottom:10px">${av(p.nick,30)}<div class="col sub"><b style="color:var(--ink)">${esc(p.nick)}</b> &nbsp;${p.created_at.slice(0,10)}</div></div><h3>${esc(p.title)}</h3><p>${esc(p.body)}</p><button class="chip ${p.liked?'on':''}" onclick="like('${p.id}')">공감 ${p.likes}</button>${p.user_id===S.me.id?`<button class="link sub" onclick="confirmBox('글을 삭제할까요?',async()=>{if(await ok(api('post_del',{id:'${p.id}'}),'삭제했어요.'))render()})">삭제</button>`:''}${p.comments.map(x=>`<div class="sub" style="border-top:1px solid var(--line);padding:6px 0"><b>${esc(x.nick)}</b> ${esc(x.body)}</div>`).join('')}<div class="row"><input id="cm_${p.id}" placeholder="댓글을 입력하세요" style="margin:6px 0"><button class="btn sm" onclick="comment('${p.id}')">등록</button></div></div>`).join(''):empty('첫 번째 글을 남겨 보세요.'));
+if(S.ct==='jr')b=d.journals.length?d.journals.map(j=>`<div class="card"><div class="sub">${esc(j.nick)} · ${esc(j.title)} · ${j.created_at.slice(0,10)}</div>${esc(j.body)}</div>`).join(''):empty('멤버에게 공개된 일지가 없어요.');
+return head+`<div class="chips">${T.map(t=>`<button class="chip ${S.ct===t[0]?'on':''}" onclick="S.ct='${t[0]}';render()">${t[1]}</button>`).join('')}</div>`+b}
+const joinPub=async id=>{if(await ok(api('club_join',{id}),'모임에 참여했어요.'))render()};
+const role=async(club_id,user_id,r)=>{if(await ok(api('set_role',{club_id,user_id,role:r}),'역할을 바꿨어요.'))render()};
+const rsvp=async(event_id,resp)=>{if(await ok(api('rsvp',{event_id,resp})))render()};
+const like=async post_id=>{if(await ok(api('like',{post_id})))render()};
+const comment=async post_id=>{const e=$('#cm_'+post_id),body=e.value.trim();if(!body)return toast('댓글 내용을 입력해 주세요.');if(await ok(api('comment_add',{post_id,body})))render()};
+async function eventSheet(club_id){const bs=(await api('books_search',{q:''})).books;form('일정 만들기',[{k:'title',l:'제목',req:1},{k:'date',l:'날짜',t:'date',req:1},{k:'place',l:'장소',req:1},{k:'book_id',l:'토론 도서',t:'select',o:[['','선택 안 함'],...bs.map(b=>[b.id,b.title])]},{k:'descr',l:'설명',t:'textarea'}],async v=>{if(await ok(api('event_save',{club_id,...v}),'일정을 만들었어요.'))render();else return false})}
+function postSheet(club_id){form('토론 글쓰기',[{k:'title',l:'제목',req:1},{k:'body',l:'내용',t:'textarea',req:1}],async v=>{if(await ok(api('post_add',{club_id,...v}),'글을 등록했어요.'))render();else return false},'등록')}
+
+async function vMy(){const d=await api('lib'),cvs=(await api('conv_list')).convs,n=k=>d.books.filter(b=>b.status===k).length;
+return `<h1>MY</h1><div class="card row" style="margin-top:16px">${av(S.me.nick,52)}<h3 style="font-size:18px">${esc(S.me.nick)}</h3></div><h2>독서 통계</h2><div class="row">${[['완독',n('done')+'권'],['읽는 중',n('reading')+'권'],['읽은 쪽수',d.books.reduce((a,b)=>a+b.page,0)+'쪽']].map(x=>`<div class="card col" style="text-align:center"><div class="sub">${x[0]}</div><h3>${x[1]}</h3></div>`).join('')}</div><h2>AI 독서 토론 기록</h2>${cvs.length?cvs.map(c=>`<div class="card" style="cursor:pointer" onclick="openConv('${c.id}')"><b>${esc(c.title)}</b><div class="sub">${esc(c.updated_at.slice(0,16))}</div></div>`).join(''):empty('책 상세나 모임 요약에서 AI 토론을 시작할 수 있어요. 대화는 나만 볼 수 있어요.')}<h2>계정</h2><button class="btn ghost" id="lo">로그아웃</button><p class="sub">독서 일지는 기본적으로 나만 볼 수 있어요.</p>`+(setTimeout(()=>{$('#lo').onclick=async()=>{await ok(api('logout'));S.me=null;render()}}),'')}
+
+/* ===== AI 기능 ===== */
+let REC=null,POLL=null;
+const SECL={topics:'주요 토론 주제',opinions:'핵심 의견',differences:'서로 다른 관점과 의견 차이',quotes:'인상적인 발언',questions:'핵심 질문',conclusions:'토론에서 도출된 결론',next_topics:'다음 모임에서 이어갈 주제'};
+const PSTAT={uploaded:'업로드됨 · 처리 대기 중',transcribing:'음성 인식 중 · 길면 몇 시간 걸릴 수 있어요',transcribed:'음성 인식 완료',summarizing:'요약 중',completed:'처리 완료',failed:'처리 실패'};
+const fmtT=ms=>{const t=Math.floor((ms||0)/1000);return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0')};
+const spk=x=>/^\d+$/.test(x||'')?'화자 '+x:(x||'화자 미상');
+const openEvent=id=>{S.ev=id;S.tab='club';render();scrollTo(0,0)};
+function stopRec(discard){if(!REC)return;REC.discard=!!discard;try{REC.mr.state!=='inactive'&&REC.mr.stop()}catch(e){}REC.stream&&REC.stream.getTracks().forEach(t=>t.stop());clearInterval(REC.tm);if(discard)REC=null}
+window.addEventListener('beforeunload',e=>{if(REC){e.preventDefault();e.returnValue=''}});
+document.addEventListener('visibilitychange',()=>{if(REC&&document.hidden)toast('화면이 꺼지거나 다른 앱으로 이동하면 녹음이 멈출 수 있어요. 화면을 켜 두세요.')});
+
+async function vEvent(){
+const d=await api('event_get',{id:S.ev}),e=d.event,st=d.status;S.evd=d;
+const busy=d.pending||d.recordings.some(r=>['uploaded','transcribing','summarizing'].includes(r.status));
+clearTimeout(POLL);if(busy)POLL=setTimeout(()=>{if(S.ev&&!REC&&!S.editing&&!$('#ov').classList.contains('show'))render()},4000);
+const done=d.recordings.find(r=>r.summary);
+const rows=(r)=>`<div class="card"><div class="top"><b>${esc((r.created_at||'').slice(0,16))}</b><span class="tag">${PSTAT[r.status]}</span></div><div class="sub">${esc(r.nick)} · ${r.duration_sec?Math.round(r.duration_sec/60)+'분':'길이 알 수 없음'}</div>${r.status==='failed'?`<p style="color:var(--warn)">${esc(r.error||'처리에 실패했어요.')}</p><button class="btn ghost sm" onclick="recRetry('${r.id}')">다시 시도</button> `:''}${['transcribing','summarizing','uploaded'].includes(r.status)?'<div class="sub">처리 중이에요. 이 화면에서 자동으로 갱신돼요.</div>':''}${r.audio?`<audio controls preload="none" style="width:100%;margin-top:8px" src="${esc(r.audio)}"></audio>`:'<div class="sub">원본 오디오는 삭제됐어요.</div>'}${r.can_delete?`<div style="margin-top:8px"><button class="btn danger sm" onclick="recDel('${r.id}',${r.audio?1:0})">${r.audio?'오디오 삭제':'기록 전체 삭제'}</button></div>`:''}</div>`;
+let h=`<button class="link" onclick="S.ev=null;render()">← 모임 일정</button><h1 style="margin-top:8px">${esc(e.title)}</h1><div class="sub">${esc(e.date)} · ${esc(e.place)}${e.book?' · '+esc(e.book.title):''}</div>`;
+if(!st.google||!st.claude)h+=`<div class="card" style="margin-top:12px"><b>AI 기능 설정이 필요해요</b><div class="sub">${!st.google?'· 음성 인식(Google Cloud) 설정이 완료되지 않았어요.<br>':''}${!st.claude?'· 요약·추천·토론용 Claude API 키가 없어요.<br>':''}AI 처리 서버의 .env 파일을 확인해 주세요.</div></div>`;
+h+=`<h2>녹음 및 녹음 파일</h2><div class="card"><div class="sub" style="margin-bottom:8px">녹음 전에 모든 참석자에게 녹음과 AI 처리 사실을 알리고 동의를 받아야 해요. 녹음은 이 모임 멤버만 들을 수 있어요${st.retention_days?`, 원본 오디오는 ${st.retention_days}일 뒤 자동 삭제돼요`:''}.</div><label><input type="checkbox" id="cons">모든 참석자에게 알렸고 동의를 받았어요</label><div id="recbox" style="margin-top:12px"></div></div>${d.recordings.length?d.recordings.map(rows).join(''):empty('아직 녹음이 없어요.')}`;
+const t=d.recordings.find(r=>r.transcript);
+h+=`<h2>전체 대화 기록</h2>${t?`<div class="card"><div style="margin-bottom:8px">${[...new Set(t.transcript.segments.map(x=>x.speaker))].map(x=>`<button class="chip" onclick="renameSpk('${t.transcript.id}','${esc(x)}')">${esc(spk(x))} 이름 바꾸기</button>`).join('')}</div><div class="sub" style="margin-bottom:6px">자동 화자 구분은 틀릴 수 있어요. 이름을 직접 고쳐 주세요.</div>${t.transcript.segments.map(x=>`<p style="margin:6px 0"><span class="sub">${fmtT(x.start_ms)} · <b>${esc(spk(x.speaker))}</b></span><br>${esc(x.text)}</p>`).join('')}</div>`:empty('음성 인식이 끝나면 원문이 여기에 표시돼요.')}`;
+const sm=done&&done.summary,grp=sec=>sm?sm.items.filter(i=>i.section===sec):[],badge=i=>`<span class="tag">${i.kind==='statement'?'참가자 발언 정리':'AI 해석'}</span>`,list=secs=>secs.map(sec=>grp(sec).length?`<div style="margin:10px 0 4px"><b>${SECL[sec]}</b></div>${grp(sec).map(i=>`<div class="card" style="margin:6px 0">${esc(i.text)} ${badge(i)}</div>`).join('')}`:'').join('')||'<div class="sub">해당 내용이 없어요.</div>';
+h+=`<h2>AI 토론 요약</h2>${sm?`<div class="card"><p style="margin-top:0">${esc(sm.overview)}</p><div class="sub">AI가 대화 기록을 바탕으로 정리했어요${sm.edited?' · 직접 수정됨':''}. '참가자 발언 정리'는 기록에 있는 내용이고, 'AI 해석'은 AI의 추론이에요.${sm.dropped?` 원문에서 확인되지 않은 인용 ${sm.dropped}개는 제외했어요.`:''}</div><div style="margin-top:10px"><button class="btn ghost sm" onclick="editSummary()">요약 수정</button> <button class="btn ghost sm" onclick="regen('${done.id}')">요약 다시 만들기</button></div></div>${list(['quotes','conclusions','next_topics'])}`:empty('녹음 처리가 끝나면 AI 요약이 여기에 표시돼요.')}`;
+h+=`<h2>주요 논점</h2>${sm?list(['topics','opinions','differences','questions']):empty('요약이 완료되면 표시돼요.')}`;
+h+=`<h2>다음 책 추천</h2><div class="card"><label for="pref">내 독서 취향 (선택, 모임 멤버의 추천에 반영돼요)</label><textarea id="pref" maxlength="500" placeholder="예: 에세이, 과학 교양서를 좋아해요">${esc(d.pref)}</textarea><div class="row"><button class="btn ghost sm" onclick="savePref('${e.club_id}')">취향 저장</button><button class="btn sm" onclick="genRec('${e.id}')" ${sm?'':'disabled'}>AI 추천 받기</button></div>${sm?'':'<div class="sub" style="margin-top:6px">요약이 완료되면 추천을 받을 수 있어요.</div>'}${d.pending?'<div class="sub" style="margin-top:6px">AI가 추천을 만드는 중이에요…</div>':''}${d.rec_error?`<div class="sub" style="margin-top:6px;color:var(--warn)">${esc(d.rec_error)}</div>`:''}</div>${d.recs.map(r=>`<div class="card"><h3>${esc(r.title)}</h3><div class="sub">${esc(r.author)} <span class="tag">${r.verified?'서재 DB에 등록된 책':'AI 제안 · 서지 미확인'}</span></div><p><b>추천 이유</b><br>${esc(r.reason)}</p><p><b>지난 토론과의 연결</b><br>${esc(r.connection)}</p>${r.questions.length?`<div><b>토론 질문</b>${r.questions.map(q=>`<div class="sub">· ${esc(q)}</div>`).join('')}</div>`:''}<div style="margin-top:8px"><button class="chip ${r.voted?'on':''}" onclick="vote('${r.id}')">투표 ${r.votes}</button></div></div>`).join('')}${d.recs.length?'<div class="sub">AI가 제안한 책은 제목·저자를 서점이나 도서관에서 직접 확인해 주세요.</div>':''}`;
+h+=`<h2>개인 AI 토론 시작</h2><div class="card"><div class="sub" style="margin-bottom:8px">이 모임의 요약과 내 메모를 바탕으로 나만의 대화를 시작해요. 대화는 나만 볼 수 있어요.</div><button class="btn" onclick="startChat({event_id:'${e.id}'})">AI와 토론하기</button></div>`;
+setTimeout(drawRec);return h}
+
+function drawRec(){const b=$('#recbox');if(!b)return;
+if(REC){const paused=REC.mr.state==='paused';b.innerHTML=`<div class="row"><b id="rtm">${fmtT(REC.ms+(paused?0:Date.now()-REC.t0))}</b><span class="sub">${paused?'일시정지':'녹음 중'}</span></div><div class="row" style="margin-top:8px"><button class="btn sm" onclick="recPause()">${paused?'재개':'일시정지'}</button><button class="btn sm" onclick="recStop()">종료하고 업로드</button><button class="btn danger sm" onclick="recCancel()">취소</button></div>`;return}
+if(S.partial){b.innerHTML=`<div class="sub" style="color:var(--warn)">${esc(S.partial.msg)}</div><div class="row" style="margin-top:8px"><button class="btn sm" onclick="upBlob()">지금까지 녹음 업로드</button><button class="btn danger sm" onclick="S.partial=null;drawRec()">버리기</button></div>`;return}
+const ok=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);
+b.innerHTML=(ok?`<button class="btn" onclick="recStart()">토론 녹음 시작</button>`:`<div class="sub">이 브라우저에서는 녹음을 쓸 수 없어요. 아래 파일 업로드를 이용하거나 다른 브라우저로 접속해 주세요.</div>`)+`<div style="margin-top:12px"><label for="afile">또는 녹음 파일 올리기</label><input type="file" id="afile" accept="audio/*" onchange="upFile(this)"></div><div id="upst" class="sub"></div>`}
+
+async function recStart(){
+if(!$('#cons').checked)return toast('참석자 동의 확인에 체크해 주세요.');
+let stream;try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){return toast(e.name==='NotAllowedError'?'마이크 권한이 거부됐어요. 브라우저 설정에서 마이크를 허용해 주세요.':e.name==='NotFoundError'?'마이크를 찾을 수 없어요.':'마이크를 열 수 없어요: '+e.name)}
+const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg'].find(m=>MediaRecorder.isTypeSupported(m))||'';
+let mr;try{mr=new MediaRecorder(stream,mime?{mimeType:mime,audioBitsPerSecond:32000}:{audioBitsPerSecond:32000})}catch(e){stream.getTracks().forEach(t=>t.stop());return toast('이 브라우저는 녹음 형식을 지원하지 않아요. 파일 업로드를 이용해 주세요.')}
+const R=REC={mr,stream,chunks:[],ms:0,t0:Date.now(),mime:mr.mimeType||mime||'audio/webm'};
+mr.ondataavailable=ev=>{ev.data&&ev.data.size&&R.chunks.push(ev.data)};
+mr.onerror=()=>interrupted('녹음 중 오류가 발생해 멈췄어요.');
+stream.getAudioTracks().forEach(t=>t.onended=()=>{if(REC===R&&!R.stopping)interrupted('마이크 연결이 끊겼어요(전화나 다른 앱이 마이크를 사용했을 수 있어요).')});
+mr.onstop=()=>{if(R.discard||R.handled)return;R.handled=1;finish(R)};
+R.tm=setInterval(()=>{const x=$('#rtm');if(x&&mr.state==='recording')x.textContent=fmtT(R.ms+Date.now()-R.t0)},500);mr.start(10000);drawRec()}
+function interrupted(msg){const R=REC;if(!R||R.handled)return;R.handled=1;R.stopping=1;clearInterval(R.tm);if(R.mr.state==='recording')R.ms+=Date.now()-R.t0;try{R.mr.state!=='inactive'&&R.mr.stop()}catch(e){}R.stream.getTracks().forEach(t=>t.stop());setTimeout(()=>{S.partial={blob:new Blob(R.chunks,{type:R.mime}),dur:R.ms/1000,msg:msg+' 지금까지의 녹음을 업로드할 수 있어요.'};REC=null;S.ev&&drawRec()},300)}
+function recPause(){const R=REC;if(R.mr.state==='recording'){R.mr.pause();R.ms+=Date.now()-R.t0}else{R.mr.resume();R.t0=Date.now()}drawRec()}
+function recStop(){const R=REC;R.stopping=1;if(R.mr.state==='recording')R.ms+=Date.now()-R.t0;R.stream.getTracks().forEach(t=>t.stop());clearInterval(R.tm);if(R.mr.state!=='inactive')R.mr.stop();else if(!R.handled){R.handled=1;finish(R)}}
+function recCancel(){confirmBox('녹음을 취소하고 버릴까요?',async()=>{stopRec(true);drawRec()})}
+function finish(R){const blob=new Blob(R.chunks,{type:R.mime});REC=null;if(!blob.size){toast('녹음된 내용이 없어요.');return drawRec()}S.partial={blob,dur:R.ms/1000,msg:'녹음이 끝났어요. 업로드하면 AI 처리가 시작돼요.'};drawRec()}
+async function upBlob(){const p=S.partial;if(!p)return;if(!$('#cons').checked)return toast('참석자 동의 확인에 체크해 주세요.');if(await postAudio(p.blob,p.blob.type||'audio/webm',p.dur))S.partial=null;render()}
+async function upFile(i){const f=i.files[0];if(!f)return;if(!$('#cons').checked){i.value='';return toast('참석자 동의 확인에 체크해 주세요.')}if(!f.type.startsWith('audio/')){i.value='';return toast('오디오 파일만 올릴 수 있어요.')}if(await postAudio(f,f.type,0))render();else i.value=''}
+async function postAudio(blob,type,dur){const st=$('#upst');st&&(st.textContent='업로드 중… 창을 닫지 마세요.');
+try{await uploadRecording(blob,type,dur,S.ev,S.evd.event.club_id);toast('업로드했어요. AI 처리 서버가 곧 처리를 시작해요.');return true}catch(e){toast(e.message||'업로드에 실패했어요.');st&&(st.textContent='');return false}}
+const recDel=(id,audio)=>confirmBox(audio?'오디오를 삭제할까요? (대화 기록과 요약은 남아요)':'녹음과 대화 기록, 요약을 모두 삭제할까요?',async()=>{if(await ok(api('rec_delete',{id,all:audio?0:1}),'삭제했어요.'))render()});
+const recRetry=async id=>{if(await ok(api('rec_retry',{id}),'다시 처리를 시작해요.'))render()};
+const regen=id=>confirmBox('요약을 다시 만들까요? 직접 수정한 내용은 사라져요.',async()=>{if(await ok(api('summary_regen',{id}),'요약을 다시 만들어요.'))render()});
+function renameSpk(tid,old){form(spk(old)+' 이름 바꾸기',[{k:'new',l:'새 이름',req:1}],async v=>{if(await ok(api('speaker_rename',{transcript_id:tid,old,new:v.new}),'이름을 바꿨어요.'))render();else return false})}
+function editSummary(){const r=S.evd.recordings.find(x=>x.summary),sm=r.summary;S.editing=1;
+sheet(`<h3>요약 수정</h3><label for="e_ov">전체 토론 요약</label><textarea id="e_ov">${esc(sm.overview)}</textarea>${sm.items.map((i,n)=>`<label for="e_${n}">${SECL[i.section]} (${i.kind==='statement'?'참가자 발언 정리':'AI 해석'})</label><textarea id="e_${n}" style="min-height:60px">${esc(i.text)}</textarea>`).join('')}<div class="sub" style="margin-bottom:10px">내용을 비우면 그 항목이 삭제돼요.</div><button class="btn" id="e_ok">저장</button>`);
+$('#e_ok').onclick=async()=>{const items=sm.items.map((i,n)=>({section:i.section,kind:i.kind,text:$('#e_'+n).value.trim()})).filter(i=>i.text);if(await ok(api('summary_save',{id:sm.id,overview:$('#e_ov').value.trim(),items}),'저장했어요.')){S.editing=0;closeSheet();render()}};
+$('#ov').addEventListener('click',()=>{S.editing=0},{once:true})}
+const savePref=async club_id=>{await ok(api('pref_save',{club_id,text:$('#pref').value}),'취향을 저장했어요.')};
+const genRec=async event_id=>{if(await ok(api('rec_generate',{event_id}),'추천을 요청했어요. 잠시 뒤 아래에 표시돼요.'))render()};
+const vote=async id=>{if(await ok(api('rec_vote',{id})))render()};
+
+async function startChat(p){try{const j=await api('conv_new',p);closeSheet();stopRec(true);S.tab='my';S.club=null;S.ev=null;S.conv=j.id;render();scrollTo(0,0)}catch(e){}}
+const openConv=id=>{S.conv=id;render();scrollTo(0,0)};
+async function vConv(){const d=await api('conv_get',{id:S.conv});
+const starters=['이 책에서 가장 오래 남은 장면이나 생각은 무엇인가요?','작가가 말하고 싶었던 것은 무엇이라고 생각하나요?','읽기 전과 후에 달라진 생각이 있나요?'];
+setTimeout(()=>{const b=$('#chatlog');b&&(b.scrollTop=b.scrollHeight)});
+return `<button class="link" onclick="S.conv=null;render()">← 대화 목록</button><div class="top" style="margin-top:8px"><h1>${esc(d.conv.title)}</h1></div><div class="sub">나만 볼 수 있는 대화예요. AI는 내 메모를 우선하고, 알려진 책은 아는 범위에서 이야기해요. 틀릴 수 있고 검색은 하지 못해요.</div>
+<div id="chatlog" style="margin:14px 0">${d.messages.length?d.messages.map(m=>`<div class="card" style="${m.role==='user'?'margin-left:36px;background:var(--olive2)':'margin-right:36px'}"><div style="white-space:pre-wrap">${esc(m.content)}</div>${m.role==='assistant'&&d.conv.book_id?`<div style="margin-top:6px"><button class="btn ghost sm" onclick="saveEx('${m.id}')">일지에 저장</button></div>`:''}</div>`).join(''):`<div class="empty">이야기를 시작해 보세요.<div style="margin-top:10px">${starters.map(q=>`<button class="chip" onclick="sendChat(${JSON.stringify(q).replace(/"/g,'&quot;')})">${esc(q)}</button>`).join('')}</div></div>`}</div>
+<div class="row"><textarea id="cin" style="min-height:48px;margin:0" placeholder="생각을 적어 보세요"></textarea><button class="btn" id="csend" onclick="sendChat()">보내기</button></div>
+<div class="row" style="margin-top:14px"><button class="btn ghost sm" onclick="newChat('${d.conv.book_id||''}','${d.conv.event_id||''}')">새 대화 시작</button><button class="btn danger sm" onclick="confirmBox('이 대화를 삭제할까요?',async()=>{if(await ok(api('conv_delete',{id:'${d.conv.id}'}),'삭제했어요.')){S.conv=null;render()}})">대화 삭제</button></div>`}
+async function sendChat(t){const i=$('#cin'),text=(t||i.value).trim();if(!text)return toast('내용을 입력해 주세요.');const b=$('#csend');b.disabled=true;b.textContent='생각 중…';i.disabled=true;
+try{await api('conv_send',{id:S.conv,text});render()}catch(e){b.disabled=false;b.textContent='보내기';i.disabled=false}}
+const saveEx=async message_id=>{await ok(api('conv_save',{message_id}),'일지에 저장했어요. (나만 보기)')};
+const newChat=(book_id,event_id)=>startChat({book_id:book_id||undefined,event_id:event_id||undefined});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+api('me').then(j=>{S.me=j.me;S.needCode=j.need_code;render()}).catch(()=>{$('#app').innerHTML=empty('서버에 연결할 수 없어요. 새로고침해 주세요.')});
+</script>
+</body>
+</html>

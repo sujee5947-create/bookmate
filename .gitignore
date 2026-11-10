@@ -1,0 +1,28 @@
+# 비밀 정보
+.env
+.env.*
+!.env.example
+google-key.json
+*credentials*.json
+*service-account*.json
+
+# 개인 정보
+recordings/
+*.mp3
+*.m4a
+*.wav
+*.webm
+*.db
+*.sqlite
+*.log
+
+# 필요 없는 것
+node_modules/
+.venv/
+venv/
+__pycache__/
+.vercel/
+.vscode/
+.cursor/
+.DS_Store
+Thumbs.db
