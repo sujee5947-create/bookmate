@@ -16,10 +16,15 @@ jobs:
     steps:
       - name: Ping Supabase database
         run: |
-          status=$(curl -s -o /dev/null -w "%{http_code}" \
+          body=$(curl -s -w "\n%{http_code}" \
             "$SUPABASE_URL/rest/v1/$PING_TABLE?select=*&limit=1" \
             -H "apikey: $SUPABASE_ANON_KEY")
+          status=$(echo "$body" | tail -n1)
           echo "HTTP status: $status"
-          if [ "$status" -ge 400 ]; then
-            echo "Ping 실패 — URL/키/테이블 이름을 확인하세요"; exit 1
+          echo "$body" | head -n -1 | head -c 300; echo
+          # 200: 정상 / 42501: DB가 쿼리를 받고 권한 거부(비로그인 차단 정책) → DB 활동으로 충분
+          if [ "$status" -lt 400 ] || echo "$body" | grep -q '42501'; then
+            echo "Ping OK — DB에 요청 도달"
+          else
+            echo "Ping 실패 — URL/키를 확인하세요"; exit 1
           fi
