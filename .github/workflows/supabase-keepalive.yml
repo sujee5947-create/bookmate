@@ -1,0 +1,26 @@
+# Supabase 무료 플랜 자동 일시정지(7일 비활성) 방지용 ping
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    - cron: "0 0 */3 * *"   # 3일마다 UTC 00:00 (한국시간 오전 9시)
+  workflow_dispatch:         # Actions 탭에서 수동 실행(테스트)용
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      PING_TABLE: books
+    steps:
+      - name: Ping Supabase database
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" \
+            "$SUPABASE_URL/rest/v1/$PING_TABLE?select=*&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+          echo "HTTP status: $status"
+          if [ "$status" -ge 400 ]; then
+            echo "Ping 실패 — URL/키/테이블 이름을 확인하세요"; exit 1
+          fi
