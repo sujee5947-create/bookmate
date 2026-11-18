@@ -18,8 +18,7 @@ jobs:
         run: |
           status=$(curl -s -o /dev/null -w "%{http_code}" \
             "$SUPABASE_URL/rest/v1/$PING_TABLE?select=*&limit=1" \
-            -H "apikey: $SUPABASE_ANON_KEY" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+            -H "apikey: $SUPABASE_ANON_KEY")
           echo "HTTP status: $status"
           if [ "$status" -ge 400 ]; then
             echo "Ping 실패 — URL/키/테이블 이름을 확인하세요"; exit 1
